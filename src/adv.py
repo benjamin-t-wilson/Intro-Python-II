@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+import sys
 
 # Declare all the rooms
 
@@ -48,24 +49,28 @@ player = Player(room["outside"])
 # * Prints the current description (the textwrap module might be useful here).
 # * Waits for user input and decides what to do.
 #
+is_start_of_game = True
 
-command = "start"
 
-while not command == "quit":
-    print(f"Player has entered: {player.room.name}, {player.room.description}")
-    command = str(input("What direction will you move? "))
-    if command == "north":
-        player.room = player.room.n_to
-    elif command == "east":
-        player.room = player.room.e_to
-    elif command == "south":
-        player.room = player.room.s_to
-    elif command == "west":
-        player.room = player.room.w_to
-    elif command == "quit":
-        exit()
+def input_parse():
+    global is_start_of_game
+    if is_start_of_game:
+        is_start_of_game = False
+        input("Proceed at your own risk. Press enter to continue. Type 'q' at any time to quit.\n")
     else:
-        print("Invalid command")
+        direction = input("[n] North [e] East [s] South [w] West [q] Quit : ")
+        return direction
+
+
+command = input_parse()
+
+while not command == "q":
+    print(f"\nPlayer has entered:\n{player.room.name}, {player.room.description}\n")
+    command = input_parse()
+    if command != "q":
+        player.move(f"{command}_to")
+    else:
+        sys.exit("Thanks for playing")
 
 
 # If the user enters a cardinal direction, attempt to move to the room there.
