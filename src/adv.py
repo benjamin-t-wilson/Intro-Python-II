@@ -73,6 +73,8 @@ def input_parse():
 
 command = input_parse()
 
+cardinal_dirs = ("n", "e", "s", "w")
+
 while not command == "q":
     print(
         f"\nPlayer has entered:\n{player.room.name}, {player.room.description}\n")
@@ -80,7 +82,7 @@ while not command == "q":
         print(f"This room contains items: {player.room.items_list()}")
         print(f"You can pick up items by typing 'get ITEM_NAME'\n")
     command = input_parse()
-    if command == "n" or command == "e" or command == "s" or command == "w":
+    if command in cardinal_dirs:
         player.move(f"{command}_to")
     elif "get" in command:
         player.pick_up(items[command.split(" ")[1]])
